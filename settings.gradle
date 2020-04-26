@@ -1,0 +1,3 @@
+include ':utilitieslibrary'
+include ':app'
+rootProject.name = "UtilitiesLibrary"

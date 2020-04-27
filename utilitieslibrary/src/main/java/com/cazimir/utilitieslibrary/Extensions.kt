@@ -25,6 +25,18 @@ fun <T> LiveData<T>.observeOnceWithTrue(lifecycleOwner: LifecycleOwner, observer
     })
 }
 
+fun <T> LiveData<T>.observeOnceWithTrueNoLifecycleOwner(observer: Observer<T>) {
+    observeForever(object: Observer<T> {
+        override fun onChanged(t: T?) {
+            if (t as Boolean) {
+                observer.onChanged(t)
+                removeObserver(this)
+            }
+
+        }
+    })
+}
+
 // observe once until a non empty list is delivered then terminate (remove observer)
 fun <T> LiveData<T>.observeOnceOnListNotEmpty(observer: Observer<T>) {
     observeForever(object : Observer<T> {
@@ -45,6 +57,19 @@ fun <T> LiveData<T>.observeOnceOnListNotEmptyWithOwner(lifecycleOwner: Lifecycle
         override fun onChanged(t: T?) {
             val list = t as List<*>
             if (list.isNotEmpty()) {
+                observer.onChanged(t)
+                removeObserver(this)
+            }
+
+        }
+    })
+}
+
+fun <T> LiveData<T>.observeOnceOnListEmptyWithOwner(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
+    observe(lifecycleOwner, object : Observer<T> {
+        override fun onChanged(t: T?) {
+            val list = t as List<*>
+            if (list.isEmpty()) {
                 observer.onChanged(t)
                 removeObserver(this)
             }

@@ -12,9 +12,10 @@ fun String.pluralize(count: Int): String? {
     }
 }
 
-fun showSnackbar(coordinator: ViewGroup, message: String) {
-    Snackbar.make(coordinator, message, Snackbar.LENGTH_SHORT).setTextColor(Color.WHITE).show()
-
+fun showSnackbar(coordinator: ViewGroup, message: String, length: Int): Snackbar {
+    val snackbar = Snackbar.make(coordinator, message, length).setTextColor(Color.WHITE)
+    snackbar.show()
+    return snackbar
 }
 
 
